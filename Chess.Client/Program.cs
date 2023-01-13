@@ -1,12 +1,42 @@
-using Chess.Application;
-using Chess.Infrastructure;
+using Chess.Application.Mapper;
+using Chess.Application.Services.Implementation;
+using Chess.Application.Services.Implementations;
+using Chess.Application.Services.Interfaces;
+using Chess.Infrastructure.DAL;
+using Mapster;
+using MapsterMapper;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IMapService, MapService>();
-builder.Services.AddScoped<IMapRepository, MapRepository>();
+
+var connectionString = builder.Configuration.GetConnectionString("ChessDB");
+builder.Services.AddDbContext<ChessContext>(options => 
+    options.UseSqlServer(connectionString)
+);
+
+// Services DAL
+//var config = new TypeAdapterConfig();
+//config.Scan(Assembly.GetExecutingAssembly());
+//builder.Services.AddSingleton(config);
+//builder.Services.AddScoped<IMapper, ServiceMapper>();
+builder.Services.AddMappings();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IMapService>(x =>
+                new MapService(
+                    x.GetRequiredService<IUnitOfWork>(),
+                    x.GetRequiredService<IMapper>()
+                ));
+builder.Services.AddScoped<IBoxService>(x =>
+                new BoxService(
+                    x.GetRequiredService<IUnitOfWork>(),
+                    x.GetRequiredService<IMapper>()
+                ));
 
 var app = builder.Build();
 

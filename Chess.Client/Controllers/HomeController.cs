@@ -1,4 +1,4 @@
-﻿using Chess.Application;
+﻿using Chess.Application.Services.Interfaces;
 using Chess.Client.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -9,18 +9,21 @@ namespace Chess.Client.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IMapService _mapService;
+        private readonly IBoxService _boxService;
 
-        public HomeController(ILogger<HomeController> logger, IMapService mapService)
+        public HomeController(ILogger<HomeController> logger, IMapService mapService, IBoxService boxService)
         {
             _logger = logger;
             _mapService = mapService;
+            _boxService = boxService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var maps = _mapService.GetAllMaps().Select(x => new MapModel { Id = x.Id, Name = x.Name, cols = x.cols, rows = x.rows});
+            var map = await _mapService.Get(x => x.Id == 1, new List<string>() { { "Boxes" } });
+            //var box = await _boxService.Get(x => x.Id == 1, new List<string>() { { "Map" } });
 
-            return View(maps.ToList());
+            return View(map);
         }
 
         public IActionResult Maps()

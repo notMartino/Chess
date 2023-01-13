@@ -1,4 +1,6 @@
-﻿@model List<MapModel>
+﻿@using Chess.Application.DTOs
+@*@model BoxDTO*@
+@model MapDTO
 
 @{
     ViewData["Title"] = "Home Page";
@@ -8,10 +10,10 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 
-    @foreach (var map in Model)
-    {
-        <span>@map.Id</span>
-        <span>@map.Name</span>
+        @Model
+        <span>@Model.Id</span>
+        <span>@Model.Name</span>
+        <span>@Model.Cols</span>
+        <span>@Model.Rows</span>
 
-    }
 </div>
