@@ -1,11 +1,6 @@
 ﻿using Chess.Application.DTOs;
 using Chess.Domain.Entities;
 using Mapster;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chess.Application.Mapper
 {
@@ -15,12 +10,13 @@ namespace Chess.Application.Mapper
         {
             // Map
             config.NewConfig<Map, MapDTO>()
+                .Map(d => d.Id, s => BCrypt.Net.BCrypt.HashString(s.Id.ToString(), BCrypt.Net.SaltRevision.Revision2B))
                 //.PreserveReference(true)
-                .MaxDepth(2)
+                .MaxDepth(4)
                 .ShallowCopyForSameType(true)
                 //.Map(d => d.Name, s => s.Name)
-                //.IgnoreNonMapped(true)
-                //.Map(d => d, s => s)
+                .IgnoreNonMapped(true)
+                //.Map(d => d.Boxes, s => s.Boxes)
                 ;
 
             // Box

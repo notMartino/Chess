@@ -1,0 +1,68 @@
+﻿@model LoginModel
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-box px-4 py-3">
+            @* Header *@
+            <div class="modal-header border-0 position-relative justify-content-center">
+                <h2 class="fw-normal text-nowrap">
+                    <i class="fa-brands fa-phoenix-framework"></i>
+                    PRO Chess
+                </h2>
+
+                <button type="button" class="btn-close btn-close-white position-absolute" data-bs-dismiss="modal" aria-label="Close" style="top: 0; right: -5px;"></button>
+            </div>
+
+            @* Body *@
+            <div class="modal-body">
+                <form asp-controller="Home" asp-action="Login" method="post" asp-all-route-model="@Model" id="login-form">
+                    <input type="text" asp-for="@Model.Username" class="bg-transparent text-input mb-4  fw-bold" placeholder="username" />
+
+                    <div class="position-relative mb-2">
+                        <input id="password-input" asp-for="@Model.Password" class="bg-transparent text-input fw-bold" type="password" placeholder="password" />
+                        <i class="fa-regular fa-eye input-incon-right" id="show-pw-icon" style="" onmousedown="showPassword()" onmouseup="hidePassword()" onmouseout="hidePassword()"></i>
+                    </div>
+
+                    <div class="mb-4">
+                        <input type="checkbox" asp-for="@Model.RememberMe" class="align-middle pointer checkbox " />
+                        <label asp-for="@Model.RememberMe" class="fw-bold align-middle d-inline-block pointer user-select-none">Remember me</label>
+                    </div>
+                </form>
+
+                @* Btns *@
+                <button type="submit" form="login-form" class="d-inline-block w-100 primary-button fw-bold">Login</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        //your code here
+        console.log("CUAI");
+        openModalViaUrl();
+    });
+
+    function showPassword() {
+        let input = $("#password-input");
+        input.prop("type", "text");
+        input.trigger("focus");
+    }
+
+    function hidePassword() {
+        let input = $("#password-input");
+        input.prop("type", "password");
+        input.trigger("focus");
+    }
+
+    function openModalViaUrl() {
+        url = new URL(window.location.href);
+        console.log(url.searchParams.has('loginModal'));
+
+        if (url.searchParams.has('loginModal') /* && url.searchParams.get('') */)
+            $("#exampleModal").modal("show");
+
+        return;
+    }
+</script>

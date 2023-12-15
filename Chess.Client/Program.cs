@@ -5,6 +5,8 @@ using Chess.Application.Services.Interfaces;
 using Chess.Infrastructure.DAL;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,28 +17,54 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-var connectionString = builder.Configuration.GetConnectionString("ChessDB");
+// AppSettings
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+string connectionString = builder.Configuration.GetConnectionString("ChessDB");
+string cookiesSchemeName = builder.Configuration.GetValue<string>("CookiesScheme");
+
+// EF Context
 builder.Services.AddDbContext<ChessContext>(options => 
     options.UseSqlServer(connectionString)
 );
 
-// Services DAL
-//var config = new TypeAdapterConfig();
-//config.Scan(Assembly.GetExecutingAssembly());
-//builder.Services.AddSingleton(config);
-//builder.Services.AddScoped<IMapper, ServiceMapper>();
+//Authetication (via Cookies)
+builder.Services.AddAuthentication()
+    .AddCookie(cookiesSchemeName, options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+
+        options.Cookie.Name = cookiesSchemeName;
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+            ? CookieSecurePolicy.Always : CookieSecurePolicy.Always;
+        //options.Cookie.Path = "/";
+
+        options.ReturnUrlParameter = "loginModal";
+        options.LoginPath = "/";
+        options.AccessDeniedPath = "/Home/AccessDenied";
+        options.LogoutPath = "/";
+    });
+
+// Authorization
+builder.Services.AddAuthorization();
+
+// Mapster
 builder.Services.AddMappings();
+
+//Unit of Work
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IMapService>(x =>
-                new MapService(
+
+// Services DAL
+builder.Services.AddScoped<IMapService>(x => new MapService(
                     x.GetRequiredService<IUnitOfWork>(),
                     x.GetRequiredService<IMapper>()
                 ));
-builder.Services.AddScoped<IBoxService>(x =>
-                new BoxService(
+builder.Services.AddScoped<IBoxService>(x => new BoxService(
                     x.GetRequiredService<IUnitOfWork>(),
-                    x.GetRequiredService<IMapper>()
+                    x.GetRequiredService<IMapper>() 
                 ));
+
 
 var app = builder.Build();
 
@@ -53,6 +81,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

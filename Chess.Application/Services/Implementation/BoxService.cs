@@ -25,18 +25,20 @@ namespace Chess.Application.Services.Implementation
 
         public async Task<List<BoxDTO>> GetAll(Expression<Func<Box, bool>> filter = null, Func<IQueryable<Box>, IOrderedQueryable<Box>> orderBy = null, List<string> includes = null)
         {
+            List<Box> boxes = await _unitOfWork.boxRepository.GetAll(filter, orderBy, includes);
+
+            List<BoxDTO> boxesDTO = _mapper.Map<List<BoxDTO>>(boxes);
+
             throw new NotImplementedException();
         }
 
         public async Task<BoxDTO> Get(Expression<Func<Box, bool>> filter = null, List<string> includes = null)
         {
-            var box = await _unitOfWork.boxRepository.Get(filter, includes);
-            var boxDTO = new BoxDTO();
+            Box box = await _unitOfWork.boxRepository.Get(filter, includes);
+            BoxDTO boxDTO = new();
 
             if (box != null)
-            {
                 boxDTO = _mapper.Map<BoxDTO>(box);
-            }
 
             return boxDTO;
         }

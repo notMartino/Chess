@@ -1,0 +1,79 @@
+﻿/*COLORS*/
+/*HEX VAL: #4009a4*/
+/*MIXINS*/
+/*UTILITIES*/
+.pointer {
+  cursor: pointer;
+}
+.text-gray {
+  color: #bababa;
+}
+body {
+  box-sizing: border-box;
+  font-size: 14px;
+  /*font-family:*/
+  background: linear-gradient(180deg, #000000 70%, #4009a4 100%);
+}
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 70px;
+  width: 100%;
+  background-color: #262421;
+  color: white;
+}
+.checkbox {
+  accent-color: #4009a4;
+  border: 1px solid #bababa;
+  border-radius: 2px;
+}
+main {
+  height: calc(100vh - 70px);
+  margin-top: 70px;
+  /*BTNS*/
+  /*GENERAL*/
+}
+main .primary-button {
+  color: white;
+  background-color: #4009a4;
+  border: 1px solid #4009a4;
+  border-radius: 3px;
+  padding: 5px 10px;
+  transition: color 0.15s linear, background-color 0.15s linear, border 0.15s linear;
+}
+main .primary-button:hover {
+  color: white;
+  background-color: #4009ffb3;
+  border: 1px solid #4009ffb3;
+}
+main .modal-box {
+  color: white;
+  background-color: #262421;
+  border-radius: 5px;
+  /*box-shadow: #737373 0px 1px 10px;*/
+  /*box-shadow: #212121 0px 0px 15px 5px;*/
+  /*border: 1px solid #737373;*/
+}
+main .modal-box .text-input {
+  display: inline-block;
+  width: 100%;
+  background-color: transparent;
+  color: white;
+  border: 1px solid #737373;
+  border-radius: 3px;
+  padding: 5px 10px;
+  outline: none;
+  transition: outline 0.15s linear, border 0.15s linear;
+}
+main .modal-box .text-input:focus {
+  border: 1px solid transparent;
+  outline: 3px solid #4009a4;
+}
+main .input-incon-right {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translate(0, -50%);
+  cursor: pointer;
+}

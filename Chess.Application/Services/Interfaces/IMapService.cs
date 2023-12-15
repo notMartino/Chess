@@ -13,5 +13,7 @@ namespace Chess.Application.Services.Interfaces
     {
         Task<List<MapDTO>> GetAll(Expression<Func<Map, bool>> filter = null, Func<IQueryable<Map>, IOrderedQueryable<Map>> orderBy = null, List<string> includes = null);
         Task<MapDTO> Get(Expression<Func<Map, bool>> filter = null, List<string> includes = null);
+        Task<MapDTO> Update(MapDTO map, List<string> includes = null);
+        Task<MapDTO> Delete(MapDTO map);
     }
 }

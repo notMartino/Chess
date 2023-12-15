@@ -1,0 +1,34 @@
+﻿/*COLORS*/
+@primary-color: rgba(64,9,164,1); /*HEX VAL: #4009a4*/
+@primary-color-lighter: #4009ffb3;
+
+@text-gray: #bababa;
+
+@box-grey: #262421;
+
+
+/*MIXINS*/
+.button(@color; @bg-color; @border; @padding; @border-radius: 3px; @color_h: @color; @bg-color_h: @bg-color; @border_h: @border) {
+    color: @color;
+    background-color: @bg-color;
+    border: @border;
+    border-radius: @border-radius;
+    padding: @padding;
+    transition: color 0.15s linear, background-color 0.15s linear, border 0.15s linear;
+
+    &:hover {
+        color: @color_h;
+        background-color: @bg-color_h;
+        border: @border_h;
+    }
+}
+
+/*UTILITIES*/
+.pointer{
+    cursor: pointer;
+}
+
+
+.text-gray {
+    color: @text-gray;
+}

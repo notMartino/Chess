@@ -24,20 +24,56 @@ namespace Chess.Application.Services.Implementations
 
         public async Task<List<MapDTO>> GetAll(Expression<Func<Map, bool>> filter = null, Func<IQueryable<Map>, IOrderedQueryable<Map>> orderBy = null, List<string> includes = null)
         {
-            throw new NotImplementedException();
+            try
+            {
+                List<Map> maps = await _unitOfWork.mapRepository.GetAll(filter, orderBy, includes);
+                List<MapDTO> mapsDTO = _mapper.Map<List<MapDTO>>(maps);
+
+                return mapsDTO;
+            }
+            catch (Exception ex)
+            {
+                this.AddError(ex.Message);
+                return new ();
+            }
         }
 
         public async Task<MapDTO> Get(Expression<Func<Map, bool>> filter = null, List<string> includes = null)
         {
-            var map = await _unitOfWork.mapRepository.Get(filter, includes);
-            var mapDTO = new MapDTO();
-
-            if (map != null)
+            try
             {
-                mapDTO = _mapper.Map<MapDTO>(map);
-            }
+                Map map = await _unitOfWork.mapRepository.Get(filter, includes);
+                MapDTO mapDTO = _mapper.Map<MapDTO>(map);
 
-            return mapDTO;
+                return mapDTO;
+            }
+            catch (Exception ex)
+            {
+                this.AddError(ex.Message);
+                return new ();
+            }
+        }
+
+        public async Task<MapDTO> Update(MapDTO mapDTO, List<string> includes = null)
+        {
+            try
+            {
+                Map map = _mapper.Map<Map>(mapDTO);
+                _unitOfWork.mapRepository.Update(map);
+
+                mapDTO = await Get(x => x.Id == map.Id, includes);
+                return mapDTO;
+            }
+            catch (Exception ex)
+            {
+                this.AddError(ex.Message);
+                return new ();
+            }
+        }
+
+        public Task<MapDTO> Delete(MapDTO map)
+        {
+            throw new NotImplementedException();
         }
     }
 }

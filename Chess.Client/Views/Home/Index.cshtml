@@ -1,19 +1,35 @@
 ﻿@using Chess.Application.DTOs
-@*@model BoxDTO*@
-@model MapDTO
+@model List<MapDTO>
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
+<partial name="_LoginModal" model="new LoginModel()" />
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="fw-light">Welcome</h1>
 
-        @Model
-        <span>@Model.Id</span>
-        <span>@Model.Name</span>
-        <span>@Model.Cols</span>
-        <span>@Model.Rows</span>
+    <h3 class="fw-normal">This is the Map's list</h3>
 
+    @foreach(var map in Model)
+    {
+        <h5>
+            <a asp-action="Index" asp-controller="Maps">@map.Name</a>
+        </h5>
+    }
+
+    <button data-bs-toggle="modal" data-bs-target="#exampleModal">LOGIN</button>
+
+
+    <a asp-controller="Home" asp-action="Logout">Logout</a>
+
+    @* <div class="row"> 
+        <div class="card col-12">
+            <form asp-action="SaveMap" asp-controller="Home">
+                <input value="1" type="number" step="1" min="1" asp-for="@mapForm" />
+                <input type="submit" value="Invia" />
+            </form>
+        </div>
+    </div> *@
 </div>

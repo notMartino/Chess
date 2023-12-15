@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+
+<div class="text-center container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-xl-3 col-lg-4 col-md-5 col-sm-8 col-xs-12">
+            <div class="card modal-box px-4 py-3">
+                @* Header *@
+                <div class="card-header border-0 ">
+                    <h2 class="fw-normal text-nowrap">
+                        <i class="fa-brands fa-phoenix-framework"></i>
+                        PRO Chess
+                    </h2>
+                </div>
+
+                @* Body *@
+                <div class="card-body">
+                    <form asp-action="Login" method="post">
+                        <input type="text" class="bg-transparent text-input mb-4  fw-bold" placeholder="username" />
+                        
+                        <div class="position-relative mb-4">
+                            <input id="password-input" class="bg-transparent text-input fw-bold" type="password" placeholder="password" />
+                            <i class="fa-regular fa-eye input-incon-right" id="show-pw-icon" style="" onmousedown="showPassword()" onmouseup="hidePassword()" onmouseout="hidePassword()"></i>
+                        </div>
+
+                    </form>
+
+                    @* Btns *@
+                    <button class="d-inline-block w-100 primary-button fw-bold">Login</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function showPassword(){
+        let input = $("#password-input");
+        input.prop("type", "text");
+        input.trigger("focus");
+    }
+
+    function hidePassword(){
+        let input = $("#password-input");
+        input.prop("type", "password");
+        input.trigger("focus");
+    }
+</script>

@@ -9,7 +9,7 @@ namespace Chess.Infrastructure.DAL
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null);
+        Task<List<T>> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null);
 
         Task<T> Get(Expression<Func<T, bool>> expression = null, List<string> includes = null);
 
@@ -18,7 +18,7 @@ namespace Chess.Infrastructure.DAL
 
         void Update(T entity);
 
-        Task<bool> Delete(long id);
+        Task<T> Delete(T entity);
         Task<bool> DeleteRange(IEnumerable<T> entities);
     }
 }

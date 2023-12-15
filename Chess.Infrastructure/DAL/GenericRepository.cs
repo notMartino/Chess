@@ -10,16 +10,16 @@ namespace Chess.Infrastructure.DAL
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly DbContext _dbContext;
+        private readonly ChessContext _dbContext;
         private readonly DbSet<T> _db;
 
-        public GenericRepository(DbContext dbContext)
+        public GenericRepository(ChessContext dbContext)
         {
             _dbContext = dbContext;
             _db = dbContext.Set<T>();
         }
 
-        public async Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null)
+        public async Task<List<T>> GetAll(Expression<Func<T, bool>> expression = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, List<string> includes = null)
         {
             IQueryable<T> query = _db;
 
@@ -67,12 +67,10 @@ namespace Chess.Infrastructure.DAL
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public async Task<bool> Delete(long id)
+        public async Task<T> Delete(T entity)
         {
-            var entity = await _db.FindAsync(id);
-            _db.Remove(entity);
-
-            return true;
+            //var entity = await _db.FindAsync(entity);
+            return _db.Remove(entity).Entity;
         }
 
         public Task<bool> DeleteRange(IEnumerable<T> entities)
